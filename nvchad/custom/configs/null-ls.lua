@@ -18,7 +18,9 @@ local sources = {
     filetypes = { "python" },
     extra_args = { "--line-length=120" }, --"--skip-string-normalization"
   },
-  b.formatting.isort,
+  b.formatting.isort.with {
+    extra_args = { "--profile", "black", "--line-length", "120" },
+  },
   b.diagnostics.ruff,
 }
 

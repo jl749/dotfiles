@@ -14,4 +14,4 @@ vim.opt.foldnestmax = 2
 vim.opt.foldmethod = "indent"
 -- vim.opt.foldmethod = "expr"
 -- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt.foldminlines = 20
+vim.opt.foldminlines = 15
