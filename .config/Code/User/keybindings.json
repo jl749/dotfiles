@@ -1,0 +1,90 @@
+// Place your key bindings in this file to override the defaults
+[
+    // terminal cursor overwrite
+    {
+        "key": "ctrl+e",
+        "command": "ctrl+e",
+        "when": "terminalFocus"
+    },
+    {
+        "key": "ctrl+f",
+        "command": "ctrl+f",
+        "when": "terminalFocus"
+    },
+    {
+        "key": "ctrl+k",
+        "command": "ctrl+k",
+        "when": "terminalFocus"
+    },
+    {
+        "key": "ctrl+a",
+        "command": "cursorHome",  // "cursorLineStart",
+        "when": "textInputFocus && vim.mode == 'Insert'"
+    },
+    {
+        "key": "ctrl+e",
+        "command": "cursorLineEnd",
+        "when": "textInputFocus && vim.mode == 'Insert'"
+    },
+    // vscode overwrite
+    {
+        "key": "ctrl+alt+m",
+        "command": "workbench.action.toggleMaximizedPanel"
+    },
+    {
+        "key": "ctrl+shift+n",
+        "command": "workbench.action.toggleSidebarVisibility"
+    },
+    //  - fold all, unfold all
+    {
+        "key": "ctrl+shift+j",
+        "command": "editor.foldAll",
+        "when": "editorTextFocus && foldingEnabled"
+    },
+    {
+        "key": "ctrl+shift+k",
+        "command": "editor.unfoldAll",
+        "when": "editorTextFocus && foldingEnabled"
+    },
+    //  - move pane
+    {
+        "key": "shift+alt+j",
+        "command": "workbench.action.moveEditorToNextGroup"
+    },
+    {
+        "key": "shift+alt+k",
+        "command": "workbench.action.moveEditorToPreviousGroup"
+    },
+    //  - scale panes
+    {
+        "key": "ctrl+shift+i",
+        "command": "workbench.action.increaseViewSize"
+    },
+    {
+        "key": "ctrl+shift+d",
+        "command": "workbench.action.decreaseViewSize"
+    },
+
+    //  - select suggestion
+    {
+        "key": "alt+k",
+        "command": "selectPrevSuggestion",
+        "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus || suggestWidgetVisible && textInputFocus && !suggestWidgetHasFocusedSuggestion"
+    },
+    {
+        "key": "ctrl+up",
+        "command": "-selectPrevSuggestion",
+        "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus || suggestWidgetVisible && textInputFocus && !suggestWidgetHasFocusedSuggestion"
+    },
+    {
+        "key": "alt+j",
+        "command": "selectNextSuggestion",
+        "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus || suggestWidgetVisible && textInputFocus && !suggestWidgetHasFocusedSuggestion"
+    },
+    {
+        "key": "ctrl+down",
+        "command": "-selectNextSuggestion",
+        "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus || suggestWidgetVisible && textInputFocus && !suggestWidgetHasFocusedSuggestion"
+    },
+
+]

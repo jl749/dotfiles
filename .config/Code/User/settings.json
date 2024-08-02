@@ -1,0 +1,32 @@
+{
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    "editor.lineNumbers": "relative",
+    "workbench.iconTheme": "eq-material-theme-icons",
+
+    // vim
+    "vim.leader": "<space>",
+    "vim.foldfix": true,
+    "vim.handleKeys": {
+        "<C-a>": false,
+        "<C-f>": false
+    },
+    "extensions.experimental.affinity": {
+        "vscodevim.vim": 1
+    },
+    "vim.normalModeKeyBindings": [
+    {
+        "before": ["<leader>", "m"],
+        "commands": [
+            "bookmarks.toggle"
+        ]
+    },
+    {
+        "before": ["<leader>", "b"],
+        "commands": [
+            "bookmarks.list"
+        ]
+    }
+]
+}
