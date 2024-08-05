@@ -1,32 +1,67 @@
 {
-    "[python]": {
-        "editor.formatOnType": true
-    },
+    "workbench.iconTheme": "gruvbox-material-icon-theme",
     "editor.lineNumbers": "relative",
-    "workbench.iconTheme": "eq-material-theme-icons",
+    "editor.fontFamily": "JetBrains Mono",
+
+    // font
+    "editor.fontSize": 14,
+    "editor.fontLigatures": false,
+
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "always"
+        }
+    },
+    "black-formatter.args": ["--line-length", "120"],
+    "isort.args":["--profile", "black", "--line-length", "120"],
+    // "python.analysis.typeCheckingMode": "off",
+
+    // todohighlight
+    "todohighlight.isEnable": true,
+    "todohighlight.isCaseSensitive": true,
+    "todohighlight.keywords": [
+        {
+            "text": "TODO:",
+            "color": "yellow",
+            "border": "1px solid grey",
+            "borderRadius": "1px",
+            "backgroundColor": "rgba(0,0,0,.2)",
+            "overviewRulerColor": "grey"
+        },
+        {
+            "text": "NOTE:",
+            "color": "#4287f5",
+            "border": "1px solid grey",
+            "borderRadius": "1px",
+            "backgroundColor": "rgba(0,0,0,.2)",
+        }
+    ],
 
     // vim
-    "vim.leader": "<space>",
+    "vim.leader": "\\",
     "vim.foldfix": true,
     "vim.handleKeys": {
-        "<C-a>": false,
+        // "<C-a>": false,
         "<C-f>": false
     },
     "extensions.experimental.affinity": {
         "vscodevim.vim": 1
     },
     "vim.normalModeKeyBindings": [
-    {
-        "before": ["<leader>", "m"],
-        "commands": [
-            "bookmarks.toggle"
-        ]
-    },
+    // {
+    //     "before": ["<leader>", "m"],
+    //     "commands": [
+    //         "bookmarks.toggle"
+    //     ]
+    // },
     {
         "before": ["<leader>", "b"],
         "commands": [
             "bookmarks.list"
         ]
     }
-]
+],
+"workbench.colorTheme": "Gruvbox Material Dark"
 }
