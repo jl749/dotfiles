@@ -1,9 +1,10 @@
 {
     "workbench.iconTheme": "gruvbox-material-icon-theme",
+    "workbench.colorTheme": "Gruvbox Material Dark",
     "editor.lineNumbers": "relative",
-    "editor.fontFamily": "JetBrains Mono",
 
     // font
+    "editor.fontFamily": "JetBrains Mono",
     "editor.fontSize": 14,
     "editor.fontLigatures": false,
 
@@ -50,18 +51,17 @@
         "vscodevim.vim": 1
     },
     "vim.normalModeKeyBindings": [
-    // {
-    //     "before": ["<leader>", "m"],
-    //     "commands": [
-    //         "bookmarks.toggle"
-    //     ]
-    // },
-    {
-        "before": ["<leader>", "b"],
-        "commands": [
-            "bookmarks.list"
-        ]
-    }
-],
-"workbench.colorTheme": "Gruvbox Material Dark"
+        // {
+        //     "before": ["<leader>", "m"],
+        //     "commands": [
+        //         "bookmarks.toggle"
+        //     ]
+        // },
+        {
+            "before": ["<leader>", "b"],
+            "commands": [
+                "bookmarks.list"
+            ]
+        }
+    ],
 }
