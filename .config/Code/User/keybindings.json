@@ -57,11 +57,11 @@
     },
     //  - scale panes
     {
-        "key": "ctrl+shift+i",
+        "key": "ctrl+shift+=",
         "command": "workbench.action.increaseViewSize"
     },
     {
-        "key": "ctrl+shift+d",
+        "key": "ctrl+shift+-",
         "command": "workbench.action.decreaseViewSize"
     },
 

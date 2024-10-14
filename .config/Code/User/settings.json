@@ -10,10 +10,10 @@
 
     "[python]": {
         "editor.formatOnSave": true,
-        "editor.defaultFormatter": "ms-python.black-formatter",
         "editor.codeActionsOnSave": {
             "source.organizeImports": "always"
-        }
+        },
+        "editor.defaultFormatter": "ms-python.black-formatter",
     },
     "black-formatter.args": ["--line-length", "120"],
     "isort.args":["--profile", "black", "--line-length", "120"],
@@ -33,7 +33,14 @@
         },
         {
             "text": "NOTE:",
-            "color": "#4287f5",
+            "color": "green",
+            "border": "1px solid grey",
+            "borderRadius": "1px",
+            "backgroundColor": "rgba(0,0,0,.2)",
+        },
+        {
+            "text": "WARNING:",
+            "color": "red",
             "border": "1px solid grey",
             "borderRadius": "1px",
             "backgroundColor": "rgba(0,0,0,.2)",
@@ -45,7 +52,8 @@
     "vim.foldfix": true,
     "vim.handleKeys": {
         // "<C-a>": false,
-        "<C-f>": false
+        "<C-f>": false,
+        "<C-p>": false,
     },
     "extensions.experimental.affinity": {
         "vscodevim.vim": 1
@@ -64,4 +72,10 @@
             ]
         }
     ],
+    "python.defaultInterpreterPath": "/home/jlee/miniconda3/envs/TEST/bin/python",
+    "launch": {
+        "configurations": [
+        
+        ]
+    },
 }
