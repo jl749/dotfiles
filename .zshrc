@@ -1,5 +1,7 @@
 # appended contents via `cat .zshrc >> ~/.zshrc`
 
+function del_pycache() {find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf}
+
 # CUDA related
 export CUDA_VISIBLE_DEVICES=0
 export CUDA_HOME=/usr/local/cuda
