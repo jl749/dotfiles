@@ -1,6 +1,6 @@
 {
-    "workbench.iconTheme": "gruvbox-material-icon-theme",
-    "workbench.colorTheme": "Gruvbox Material Dark",
+    "workbench.iconTheme": "eq-material-theme-icons-darker",
+    "workbench.colorTheme": "Atom One Dark",
     "editor.lineNumbers": "relative",
 
     // font
