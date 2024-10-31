@@ -26,6 +26,7 @@
         "command": "cursorLineEnd",
         "when": "textInputFocus && vim.mode == 'Insert'"
     },
+
     // vscode overwrite
     {
         "key": "ctrl+alt+m",
@@ -35,6 +36,7 @@
         "key": "ctrl+shift+n",
         "command": "workbench.action.toggleSidebarVisibility"
     },
+
     //  - fold all, unfold all
     {
         "key": "ctrl+shift+j",
@@ -46,6 +48,7 @@
         "command": "editor.unfoldAll",
         "when": "editorTextFocus && foldingEnabled"
     },
+
     //  - move pane
     {
         "key": "shift+alt+j",
@@ -55,6 +58,7 @@
         "key": "shift+alt+k",
         "command": "workbench.action.moveEditorToPreviousGroup"
     },
+
     //  - scale panes
     {
         "key": "ctrl+shift+=",
@@ -85,6 +89,35 @@
         "key": "ctrl+down",
         "command": "-selectNextSuggestion",
         "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus || suggestWidgetVisible && textInputFocus && !suggestWidgetHasFocusedSuggestion"
+    },
+
+    // breadcrumb navigation
+    // workben search navigate search results
+    {
+        "key": "l",
+        "command": "list.expand",
+        "when": "listFocus && treeElementCanExpand && !inputFocus && !treestickyScrollFocused || listFocus && treeElementHasChild && !inputFocus && !treestickyScrollFocused"
+    },
+    {
+        "key": "h",
+        "command": "list.collapse",
+        "when": "listFocus && treeElementCanCollapse && !inputFocus && !treestickyScrollFocused || listFocus && treeElementHasParent && !inputFocus && !treestickyScrollFocused"
+    },
+    {
+        "key": "alt+h",
+        "command": "breadcrumbs.focusPreviousWithPicker",
+        "when": "breadcrumbsActive && breadcrumbsVisible && listFocus && !inputFocus && !treestickyScrollFocused"
+    },
+    {
+        "key": "alt+l",
+        "command": "breadcrumbs.focusNextWithPicker",
+        "when": "breadcrumbsActive && breadcrumbsVisible && listFocus && !inputFocus && !treestickyScrollFocused"
+    },
+
+    {
+        "key": "ctrl+j",
+        "command": "search.focus.nextInputBox",
+        "when": "inSearchEditor && inputBoxFocus && || inputBoxFocus && searchViewletVisible"
     },
 
     //  - navigate command palette

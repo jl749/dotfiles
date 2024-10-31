@@ -2,6 +2,7 @@
     "workbench.iconTheme": "eq-material-theme-icons-darker",
     "workbench.colorTheme": "Atom One Dark",
     "editor.lineNumbers": "relative",
+    "window.customTitleBarVisibility": "windowed",
 
     // font
     "editor.fontFamily": "JetBrains Mono",
@@ -71,11 +72,5 @@
                 "bookmarks.list"
             ]
         }
-    ],
-    "python.defaultInterpreterPath": "/home/jlee/miniconda3/envs/TEST/bin/python",
-    "launch": {
-        "configurations": [
-        
-        ]
-    },
+    ]
 }
