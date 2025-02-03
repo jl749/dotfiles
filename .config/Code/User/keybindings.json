@@ -33,8 +33,9 @@
         "command": "workbench.action.toggleMaximizedPanel"
     },
     {
-        "key": "ctrl+shift+n",
-        "command": "workbench.action.toggleSidebarVisibility"
+        "key": "ctrl+shift+e",
+        "command": "workbench.action.toggleSidebarVisibility",
+        "when": "sideBarVisible"
     },
 
     //  - fold all, unfold all
