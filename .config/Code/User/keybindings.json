@@ -29,14 +29,71 @@
 
     // vscode overwrite
     {
+        "key": "ctrl+1",
+        "command": "-workbench.action.focusFirstEditorGroup"
+    },
+    {
+        "key": "ctrl+2",
+        "command": "-workbench.action.focusFirstEditorGroup"
+    },
+    {
+        "key": "ctrl+alt+1",
+        "command": "workbench.action.focusFirstEditorGroup"
+    },
+    {
+        "key": "ctrl+alt+2",
+        "command": "workbench.action.focusSecondEditorGroup"
+    },
+    {
         "key": "ctrl+alt+m",
         "command": "workbench.action.toggleMaximizedPanel"
     },
     {
         "key": "ctrl+shift+e",
+        "command": "-workbench.view.explorer",
+        "when": "viewContainer.workbench.view.explorer.enabled"
+    },
+    {
+        "key": "ctrl+alt+e",
+        "command": "workbench.view.explorer",
+        "when": "viewContainer.workbench.view.explorer.enabled"
+    },
+    {
+        "key": "ctrl+alt+e",
         "command": "workbench.action.toggleSidebarVisibility",
         "when": "sideBarVisible"
     },
+    {
+        "key": "ctrl+shift+d",
+        "command": "-workbench.view.debug",
+        "when": "viewContainer.workbench.view.debug.enabled"
+    },
+    {
+        "key": "ctrl+alt+d",
+        "command": "workbench.view.debug",
+        "when": "viewContainer.workbench.view.debug.enabled"
+    },
+    {
+        "key": "ctrl+shift+f",
+        "command": "-workbench.action.findInFiles"
+    },
+    {
+        "key": "ctrl+alt+f",
+        "command": "workbench.action.findInFiles",
+    },
+    {
+        "key": "ctrl+shift+h",
+        "command": "-workbench.action.replaceInFiles"
+    },
+    {
+        "key": "ctrl+alt+h",
+        "command": "workbench.view.extension.bookmarks"
+    },
+    // {
+    //     "key": "shift+alt+d",
+    //     "command": "workbench.action.terminal.runSelectedText"
+    //     editor.debug.action.selectionToRepl
+    // },
 
     //  - fold all, unfold all
     {
@@ -50,14 +107,30 @@
         "when": "editorTextFocus && foldingEnabled"
     },
 
-    //  - move pane
+    //  - move and navigate pane
+    // {
+    //     "key": "shift+alt+j",
+    //     "command": "workbench.action.moveEditorToNextGroup"
+    // },
+    // {
+    //     "key": "shift+alt+k",
+    //     "command": "workbench.action.moveEditorToPreviousGroup"
+    // },
     {
-        "key": "shift+alt+j",
-        "command": "workbench.action.moveEditorToNextGroup"
+        "key": "ctrl+h",
+        "command": "workbench.action.navigateLeft"
     },
     {
-        "key": "shift+alt+k",
-        "command": "workbench.action.moveEditorToPreviousGroup"
+        "key": "ctrl+l",
+        "command": "workbench.action.navigateRight"
+    },
+    {
+        "key": "ctrl+k",
+        "command": "workbench.action.navigateUp"
+    },
+    {
+        "key": "ctrl+j",
+        "command": "workbench.action.navigateDown"
     },
 
     //  - scale panes

@@ -57,7 +57,6 @@
 
     // vim
     "vim.leader": " ",
-    "vim.foldfix": true,
     "vim.handleKeys": {
         // "<C-a>": false,
         "<C-f>": false,
@@ -73,13 +72,24 @@
         //         "bookmarks.toggle"
         //     ]
         // },
+        // {
+        //     "before": ["<leader>", "b"],
+        //     "commands": [
+        //         "bookmarks.list"
+        //     ]
+        // },
         {
-            "before": ["<leader>", "b"],
-            "commands": [
-                "bookmarks.list"
-            ]
-        }
+            "before": [ "k" ],
+            "after": [ "g", "k" ]
+        },
+        {
+            "before": [ "j" ],
+            "after": [ "g", "j" ]
+        },
     ],
+    "vim.visualModeKeyBindings": [
+    ],
+
     "launch": {
         "configurations": [
         
