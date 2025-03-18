@@ -2,30 +2,30 @@
 [
     // terminal cursor overwrite
     {
-        "key": "ctrl+e",
-        "command": "ctrl+e",
-        "when": "terminalFocus"
-    },
-    {
         "key": "ctrl+f",
-        "command": "ctrl+f",
-        "when": "terminalFocus"
+        "command": "-workbench.action.terminal.focusFind",
+        "when": "terminalFindFocused && terminalHasBeenCreated || terminalFindFocused && terminalProcessSupported || terminalFocusInAny && terminalHasBeenCreated || terminalFocusInAny && terminalProcessSupported"
     },
     {
-        "key": "ctrl+k",
-        "command": "ctrl+k",
-        "when": "terminalFocus"
+        "key": "ctrl+shift+f",
+        "command": "workbench.action.terminal.focusFind",
+        "when": "terminalFindFocused && terminalHasBeenCreated || terminalFindFocused && terminalProcessSupported || terminalFocusInAny && terminalHasBeenCreated || terminalFocusInAny && terminalProcessSupported"
     },
-    {
-        "key": "ctrl+a",
-        "command": "cursorHome",  // "cursorLineStart",
-        "when": "textInputFocus && vim.mode == 'Insert'"
-    },
-    {
-        "key": "ctrl+e",
-        "command": "cursorLineEnd",
-        "when": "textInputFocus && vim.mode == 'Insert'"
-    },
+    // {
+    //     "key": "ctrl+alt+r",
+    //     "command": "workbench.debug.action.toggleRepl",
+    //     "when": "workbench.panel.repl.view.active"
+    // },
+    // {
+    //     "key": "ctrl+a",
+    //     "command": "cursorHome",  // "cursorLineStart",
+    //     "when": "textInputFocus && vim.mode == 'Insert'"
+    // },
+    // {
+    //     "key": "ctrl+e",
+    //     "command": "cursorLineEnd",
+    //     "when": "textInputFocus && vim.mode == 'Insert'"
+    // },
 
     // vscode overwrite
     {
@@ -45,8 +45,44 @@
         "command": "workbench.action.focusSecondEditorGroup"
     },
     {
+        "key": "ctrl+alt+1",
+        "command": "runCommands",
+        "args": {
+            "commands": [
+                "workbench.action.focusFirstEditorGroup",
+                "workbench.action.toggleSidebarVisibility"
+            ]
+        },
+        "when": "sideBarVisible"
+    },
+    {
         "key": "ctrl+alt+m",
         "command": "workbench.action.toggleMaximizedPanel"
+    },
+    {
+        "key": "ctrl+j",
+        "command": "-workbench.action.togglePanel"
+    },
+    {
+        "key": "ctrl+`",
+        "command": "-workbench.action.terminal.toggleTerminal",
+        "when": "terminal.active"
+    },
+    {
+        "key": "ctrl+`",
+        "command": "workbench.action.togglePanel",
+        "when": "terminal.active"
+    },
+    {
+        "key": "ctrl+`",
+        "command": "runCommands",
+        "args": {
+            "commands": [
+                "workbench.action.togglePanel",
+                "workbench.action.toggleSidebarVisibility"
+            ]
+        },
+        "when": "sideBarVisible"
     },
     {
         "key": "ctrl+shift+e",
@@ -57,11 +93,6 @@
         "key": "ctrl+alt+e",
         "command": "workbench.view.explorer",
         "when": "viewContainer.workbench.view.explorer.enabled"
-    },
-    {
-        "key": "ctrl+alt+e",
-        "command": "workbench.action.toggleSidebarVisibility",
-        "when": "sideBarVisible"
     },
     {
         "key": "ctrl+shift+d",
@@ -95,42 +126,34 @@
     //     editor.debug.action.selectionToRepl
     // },
 
-    //  - fold all, unfold all
+    //  - move and navigate pane
     {
         "key": "ctrl+shift+j",
-        "command": "editor.foldAll",
-        "when": "editorTextFocus && foldingEnabled"
+        "command": "workbench.action.moveEditorToNextGroup"
     },
     {
         "key": "ctrl+shift+k",
-        "command": "editor.unfoldAll",
-        "when": "editorTextFocus && foldingEnabled"
+        "command": "workbench.action.moveEditorToPreviousGroup"
     },
-
-    //  - move and navigate pane
-    // {
-    //     "key": "shift+alt+j",
-    //     "command": "workbench.action.moveEditorToNextGroup"
-    // },
-    // {
-    //     "key": "shift+alt+k",
-    //     "command": "workbench.action.moveEditorToPreviousGroup"
-    // },
     {
         "key": "ctrl+h",
-        "command": "workbench.action.navigateLeft"
+        "command": "workbench.action.navigateLeft",
+        "when": "!terminalFocus"
     },
     {
         "key": "ctrl+l",
-        "command": "workbench.action.navigateRight"
+        "command": "workbench.action.navigateRight",
+        "when": "!terminalFocus"
     },
     {
         "key": "ctrl+k",
-        "command": "workbench.action.navigateUp"
+        "command": "workbench.action.navigateUp",
+        "when": "!terminalFocus"
     },
     {
         "key": "ctrl+j",
-        "command": "workbench.action.navigateDown"
+        "command": "workbench.action.navigateDown",
+        "when": "!terminalFocus"
     },
 
     //  - scale panes

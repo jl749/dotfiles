@@ -1,5 +1,14 @@
 {
+    "terminal.integrated.allowChords": false,
+    "terminal.integrated.commandsToSkipShell": [
+        "-workbench.action.quickOpen"
+    ],
+
     "window.titleBarStyle": "custom",
+    "window.customTitleBarVisibility": "windowed",
+
+    "workbench.iconTheme": "eq-material-theme-icons-darker",
+    "workbench.colorTheme": "Atom One Dark",
     "workbench.colorCustomizations": {
         // local machine
         "titleBar.activeBackground": "#0b2238"
@@ -7,27 +16,30 @@
         // "titleBar.activeBackground": "#553955"
     },
 
-    "workbench.iconTheme": "eq-material-theme-icons-darker",
-    "workbench.colorTheme": "Atom One Dark",
     "editor.lineNumbers": "relative",
-
-    // font
     "editor.fontFamily": "JetBrains Mono",
-    "editor.fontSize": 14,
+    "editor.fontSize": 13,
     "editor.fontLigatures": false,
 
-    "[python]": {
-        // "editor.formatOnSave": true,
-        "editor.codeActionsOnSave": {
-            "source.organizeImports.isort": "explicit"
-        },
-        "editor.defaultFormatter": "ms-python.black-formatter",
-    },
-    "black-formatter.args": ["--line-length", "120"],
-    "isort.args":["--profile", "black", "--line-length", "120"],
+    // "[python]": {
+    //     // "editor.formatOnSave": true,
+    //     "editor.codeActionsOnSave": {
+    //         "source.organizeImports.isort": "explicit"
+    //     },
+    //     "editor.defaultFormatter": "ms-python.black-formatter",
+    // },
+    // "black-formatter.args": ["--line-length", "120"],
+    // "isort.args":["--profile", "black", "--line-length", "120"],
     // "python.analysis.typeCheckingMode": "off",
+    "notebook.lineNumbers": "on",
 
-    // todohighlight
+    "[cpp]": {
+        "editor.wordBasedSuggestions": "off",
+        "editor.semanticHighlighting.enabled": true,
+        "editor.stickyScroll.defaultModel": "foldingProviderModel",
+        "editor.suggest.insertMode": "replace"
+    },
+
     "todohighlight.isEnable": true,
     "todohighlight.isCaseSensitive": true,
     "todohighlight.keywords": [
@@ -58,26 +70,18 @@
     // vim
     "vim.leader": " ",
     "vim.handleKeys": {
-        // "<C-a>": false,
-        "<C-f>": false,
         "<C-p>": false,
     },
     "extensions.experimental.affinity": {
         "vscodevim.vim": 1
     },
     "vim.normalModeKeyBindings": [
-        // {
-        //     "before": ["<leader>", "m"],
-        //     "commands": [
-        //         "bookmarks.toggle"
-        //     ]
-        // },
-        // {
-        //     "before": ["<leader>", "b"],
-        //     "commands": [
-        //         "bookmarks.list"
-        //     ]
-        // },
+        {
+            "before": ["<leader>", "f"],
+            "commands": [
+                "actions.find"
+            ],
+        },
         {
             "before": [ "k" ],
             "after": [ "g", "k" ]
@@ -95,17 +99,5 @@
         
         ]
     },
-    "window.customTitleBarVisibility": "windowed",
-    "notebook.lineNumbers": "on",
-    "cmake.pinnedCommands": [
-        "workbench.action.tasks.configureTaskRunner",
-        "workbench.action.tasks.runTask"
-    ],
     "chat.commandCenter.enabled": false,
-    "[cpp]": {
-        "editor.wordBasedSuggestions": "off",
-        "editor.semanticHighlighting.enabled": true,
-        "editor.stickyScroll.defaultModel": "foldingProviderModel",
-        "editor.suggest.insertMode": "replace"
-    },
 }
