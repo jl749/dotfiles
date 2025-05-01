@@ -2,42 +2,39 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      inputs.home-manager.nixosModules.home-manager
-
       ../../modules/modulebundle.nix
     ];
 
   # === custom configs === #
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  home-manager = {
-    extraSpecialArgs = { inherit inputs; };
-    users = {
-      "simp" = import ./home.nix;
-    };
-  };
-  
   firefox.enable = true;
+  steam.enable = true;
 
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
       # [UNFREE]
-      "google-chrome"
+      # "google-chrome"
       "vscode"
-      "obsidian"
+      "brave"
+      "steam"
+      "steam-unwrapped"
+      "discord"
     ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     # BASE
-    vim 
+    glibcLocales
+    tmux
+    vim
     gcc
     wget
     htop
@@ -45,10 +42,11 @@
     file
     git
     sshfs
+    vlc
+    libvlc
 
     # UTILS
     # *common
-    home-manager
     yt-dlp
     gthumb
     # *screenshot
@@ -58,10 +56,13 @@
     swappy         # grim -g "$(slurp)" - | swappy -f -  OR  wl-paste | swappy -f -
 
     # ETC
-    google-chrome
-    # vscodium
+    wine64
     vscode
-    obsidian
+    brave
+    mangohud
+    protonup
+    lutris
+    discord
   ];
   # === custom configs === #
 
@@ -83,13 +84,18 @@
   time.timeZone = "Asia/Seoul";
 
   # Select internationalisation properties.
+  # https://search.nixos.org/options?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=locale
+  # https://nixos.org/manual/nixos/stable/index.html#module-services-input-methods-ibus
+  # ibus-daemon -d
+  # ibus-setup
   i18n.defaultLocale = "en_US.UTF-8";
-  i18n.supportedLocales = [ "ko_KR.UTF-8/UTF-8" ];
+  i18n.supportedLocales = [ "en_US.UTF-8/UTF-8" "ko_KR.UTF-8/UTF-8" ];
   i18n.inputMethod = {
+      enable = true;
       type = "ibus";
-      # enable = true;
       ibus.engines = [ pkgs.ibus-engines.hangul ];
   };
+  i18n.glibcLocales = pkgs.glibcLocales;
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -97,6 +103,18 @@
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.desktopManager.gnome = {
+    extraGSettingsOverridePackages = with pkgs; [ gnome-settings-daemon ];
+    extraGSettingsOverrides = ''
+      [org.gnome.settings-daemon.plugins.media-keys]
+      custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']
+
+      [org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom0]
+      binding='<Primary><Alt>t'
+      command='kgx'
+      name='Open terminal'
+    '';
+  };
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -110,7 +128,7 @@
   # Enable sound with pipewire.
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -132,7 +150,7 @@
   users.users.simp = {
     isNormalUser = true;
     description = "simp";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "fuse" ];
     packages = with pkgs; [
     ];
   };

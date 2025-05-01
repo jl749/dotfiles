@@ -21,6 +21,7 @@
     builtins.elem (lib.getName pkg) [
       # [UNFREE]
       # "google-chrome"
+      "vscode"
       "brave"
       "steam"
       "steam-unwrapped"
@@ -31,7 +32,10 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     # BASE
+    glibcLocales
+    tmux
     vim
+    gcc
     wget
     htop
     tree
@@ -52,9 +56,9 @@
     swappy         # grim -g "$(slurp)" - | swappy -f -  OR  wl-paste | swappy -f -
 
     # ETC
-    brave
-    # google-chrome
     wine64
+    vscode
+    brave
     mangohud
     protonup
     lutris
@@ -80,16 +84,18 @@
   time.timeZone = "Asia/Seoul";
 
   # Select internationalisation properties.
+  # https://search.nixos.org/options?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=locale
   # https://nixos.org/manual/nixos/stable/index.html#module-services-input-methods-ibus
   # ibus-daemon -d
   # ibus-setup
   i18n.defaultLocale = "en_US.UTF-8";
-  i18n.supportedLocales = [ "ko_KR.UTF-8/UTF-8" ];
+  i18n.supportedLocales = [ "en_US.UTF-8/UTF-8" "ko_KR.UTF-8/UTF-8" ];
   i18n.inputMethod = {
       enable = true;
       type = "ibus";
       ibus.engines = [ pkgs.ibus-engines.hangul ];
   };
+  i18n.glibcLocales = pkgs.glibcLocales;
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -97,6 +103,18 @@
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.desktopManager.gnome = {
+    extraGSettingsOverridePackages = with pkgs; [ gnome-settings-daemon ];
+    extraGSettingsOverrides = ''
+      [org.gnome.settings-daemon.plugins.media-keys]
+      custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']
+
+      [org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom0]
+      binding='<Primary><Alt>t'
+      command='kgx'
+      name='Open terminal'
+    '';
+  };
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -110,7 +128,7 @@
   # Enable sound with pipewire.
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
