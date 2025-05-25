@@ -2,8 +2,11 @@
   description = "Nixos config flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable"; # nixpkgs flake input
-    nvf.url = "github:notashelf/nvf"; # nvf flake input
+    # https://github.com/NixOS/nixpkgs/tree/master/nixos/doc/manual/release-notes
+    # https://nixos-and-flakes.thiscute.world/nixos-with-flakes/nixos-flake-configuration-explained
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    nvf.url = "github:notashelf/nvf"; # nvf flake input for playground
   };
 
   outputs = { self, nixpkgs, nvf, ... }@inputs:
@@ -38,11 +41,11 @@
         }).neovim;
 
       nixosConfigurations = {
-        default = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs; };
-          modules = [
-            ./hosts/default/configuration.nix
-          ];
+          default = nixpkgs.lib.nixosSystem {
+            specialArgs = { inherit inputs; };
+            modules = [
+              ./hosts/default/configuration.nix
+            ];
         };
         
         # e.g. example custom config
