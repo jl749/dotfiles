@@ -6,8 +6,10 @@
 
     "window.titleBarStyle": "custom",
     "window.customTitleBarVisibility": "windowed",
+    "window.zoomLevel": -1,
 
-    "workbench.iconTheme": "eq-material-theme-icons-darker",
+    "workbench.sideBar.location": "right",
+    "workbench.iconTheme": "vs-nomo-dark",
     "workbench.colorTheme": "Atom One Dark",
     "workbench.colorCustomizations": {
         // local machine
@@ -71,6 +73,7 @@
     "vim.leader": " ",
     "vim.handleKeys": {
         "<C-p>": false,
+        "<C-j>": false,
     },
     "extensions.experimental.affinity": {
         "vscodevim.vim": 1
@@ -89,6 +92,58 @@
         {
             "before": [ "j" ],
             "after": [ "g", "j" ]
+        },
+        {
+            "before": [
+            "<C-d>"
+            ],
+            "after": [
+                "1",
+                "5",
+                "g",
+                "j",
+                "z",
+                "z",
+            ]
+        },
+        {
+            "before": [
+                "<C-u>"
+            ],
+            "after": [
+                "1",
+                "5",
+                "g",
+                "k",
+                "z",
+                "z"
+            ]
+        },
+        {
+            "before": [
+            "<C-f>"
+            ],
+            "after": [
+                "3",
+                "0",
+                "g",
+                "j",
+                "z",
+                "z",
+            ]
+        },
+        {
+            "before": [
+                "<C-b>"
+            ],
+            "after": [
+                "3",
+                "0",
+                "g",
+                "k",
+                "z",
+                "z"
+            ]
         },
     ],
     "vim.visualModeKeyBindings": [
