@@ -8,6 +8,7 @@
     "window.customTitleBarVisibility": "windowed",
     "window.zoomLevel": -1,
 
+    "workbench.activityBar.location": "top",
     "workbench.sideBar.location": "right",
     "workbench.iconTheme": "vs-nomo-dark",
     "workbench.colorTheme": "Atom One Dark",
@@ -72,8 +73,8 @@
     // vim
     "vim.leader": " ",
     "vim.handleKeys": {
-        "<C-p>": false,
-        "<C-j>": false,
+        "<C-p>": false,  // vscode ctrl+p and ctrl+shift+p
+        "<C-k>": false,  // vscode ctrl+k ctrl+number}
     },
     "extensions.experimental.affinity": {
         "vscodevim.vim": 1
@@ -154,5 +155,4 @@
         
         ]
     },
-    "chat.commandCenter.enabled": false,
 }
