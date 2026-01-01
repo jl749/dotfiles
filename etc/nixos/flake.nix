@@ -4,8 +4,7 @@
   inputs = {
     # https://github.com/NixOS/nixpkgs/tree/master/nixos/doc/manual/release-notes
     # https://nixos-and-flakes.thiscute.world/nixos-with-flakes/nixos-flake-configuration-explained
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     nvf.url = "github:notashelf/nvf"; # nvf flake input for playground
   };
 
