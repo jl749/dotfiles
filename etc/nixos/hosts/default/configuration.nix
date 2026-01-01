@@ -59,9 +59,11 @@
     wine64
     vscode
     brave
-    mangohud
-    protonup
-    lutris
+    # mangohud
+    # protonup-ng
+    # lutris
+    # mgba
+    # desmume
     discord
   ];
   # === custom configs === #
@@ -101,9 +103,9 @@
   services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-  services.xserver.desktopManager.gnome = {
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
+  services.desktopManager.gnome = {
     extraGSettingsOverridePackages = with pkgs; [ gnome-settings-daemon ];
     extraGSettingsOverrides = ''
       [org.gnome.settings-daemon.plugins.media-keys]
