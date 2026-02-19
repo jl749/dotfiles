@@ -1,16 +1,16 @@
 -- nvim/after/plugin/lsp.lua
 
 local function my_awesome_lsp_on_attach(client, bufnr)
-	local opts = { buffer = bufnr }
-	vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-	vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-	vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-	vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-	vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, opts)
-	vim.keymap.set('n', 'K',  vim.lsp.buf.hover, opts)
-	vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-		vim.lsp.buf.format({ async = true })
-	end, { desc = "Format current buffer with LSP" })
+  local opts = { buffer = bufnr }
+  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+  vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+  vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, opts)
+  vim.keymap.set('n', 'K',  vim.lsp.buf.hover, opts)
+  vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
+    vim.lsp.buf.format({ async = true })
+  end, { desc = "Format current buffer with LSP" })
 end
 
 -- install mason :Mason
