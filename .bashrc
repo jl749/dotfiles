@@ -4,6 +4,15 @@
 # docker image ls -a | tail -n +2 | awk '{print $3}' | xargs docker image rm
 # ps aux | grep CLIKA/bin/python | awk '{print $2}' | xargs kill -9
 
+# PS1 definition
+# \t = Time (HH:MM:SS)
+# \u = Username
+# \w = Current Directory
+parse_git_branch() {
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+export PS1="\[\e[36m\][\t] \[\e[32m\]<\u> \[\e[34m\]\w\[\e[91m\]\$(parse_git_branch)\[\e[0m\] \$ "
+
 # set envs
 export CUDA_VISIBLE_DEVICES=0
 export CUDA_HOME=/usr/local/cuda
