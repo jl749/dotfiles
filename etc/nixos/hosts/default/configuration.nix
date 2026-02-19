@@ -21,11 +21,16 @@
     builtins.elem (lib.getName pkg) [
       # [UNFREE]
       # "google-chrome"
-      "vscode"
       "brave"
+
       "steam"
       "steam-unwrapped"
+
       "discord"
+
+      "code"
+      "vscode"
+      "vscode-fhs"
     ];
 
   # List packages installed in system profile. To search, run:
@@ -33,8 +38,11 @@
   environment.systemPackages = with pkgs; [
     # BASE
     glibcLocales
+    ripgrep
+    unzip
     tmux
     vim
+    # neovim
     gcc
     wget
     htop
@@ -44,6 +52,12 @@
     sshfs
     vlc
     libvlc
+
+    # NVIM LSP
+    clang-tools
+    cargo
+    rust-analyzer
+    pyright
 
     # UTILS
     # *common
@@ -57,7 +71,7 @@
 
     # ETC
     wine64
-    vscode
+    vscode-fhs
     brave
     # mangohud
     # protonup-ng
@@ -65,6 +79,156 @@
     # mgba
     # desmume
     discord
+  ];
+  programs.neovim = {
+    enable = true;
+    defaultEditor = false;
+    configure = {
+      packages.myAwesomePlugins = with pkgs.vimPlugins; {
+        # list of plugins loaded on startup
+        start = [
+          # nvim-neo-tree/neo-tree.nvim
+          # plenary-nvim
+          # nui-nvim
+          # nvim-web-devicons
+          neo-tree-nvim
+
+          # lewis6991/gitsigns.nvim
+          gitsigns-nvim
+
+          # neovim/nvim-lspconfig
+          nvim-lspconfig
+
+          # nvim-telescope/telescope.nvim
+          telescope-nvim
+
+          # nvim-treesitter/nvim-treesitter 
+          (nvim-treesitter.withPlugins (p: [
+            p.c
+            p.cpp
+            p.rust
+            p.python
+            p.nix
+          ]))
+        ];
+        # plugins loaded manually via :packadd
+        opt = [ ];
+      };
+
+      customRC = ''
+        lua << EOF
+          -- [VIM]
+          vim.g.mapleader = ' '
+          vim.g.maplocalleader = ' '
+          vim.o.clipboard = 'unnamed'
+          vim.o.number = true
+          vim.o.relativenumber = true
+          vim.o.signcolumn = 'yes'
+          vim.o.tabstop = 2
+          vim.o.shiftwidth = 2
+          vim.o.expandtab = false
+          vim.o.updatetime = 300
+          vim.o.termguicolors = true
+          vim.o.mouse = 'a'
+          vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { desc = 'Exit terminal' }) 
+          vim.keymap.set('n', 'gh', vim.diagnostic.open_float, { desc = 'Show diagnostic: error message' })
+          vim.keymap.set('n', 'gH', vim.diagnostic.setloclist, { desc = 'Open diagnostic: quickfix' })
+          vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left pane' })
+          vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right pane' })
+          vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower pane' })
+          vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper pane' })
+          vim.cmd.colorscheme 'desert'
+
+          -- [nvim-telescope/telescope.nvim]
+          local builtin = require('telescope.builtin')
+          require('telescope').setup{
+            pickers = { find_files = { hidden = true } },
+            defaults = {
+              mappings = {
+                i = {
+                  ['<A-j>'] = 'move_selection_next',
+                  ['<A-k>'] = 'move_selection_previous',
+                  ['<esc>'] = 'close'
+                }
+              }
+            }
+          }
+          vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
+          vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+          vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
+          vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+
+          -- [LSP]
+          local function my_awesome_lsp_on_attach(client, bufnr)
+            local opts = { buffer = bufnr }
+            vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+            vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+            vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+            vim.keymap.set('n', 'K',  vim.lsp.buf.hover, opts)
+            vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
+              vim.lsp.buf.format({ async = true })
+            end, { desc = "Format current buffer with LSP" })
+          end
+          for _, server in ipairs({ "pyright", "rust_analyzer", "clangd" }) do
+            vim.lsp.config(server, { on_attach = my_awesome_lsp_on_attach })
+            vim.lsp.enable(server) -- start the server for the current buffer
+          end
+
+          -- local lspconfig = require('lspconfig')
+          -- local on_attach = function(client, bufnr)
+          --   local opts = { buffer = bufnr, noremap = true, silent = true }
+          --   vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+          --   vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+          --   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+          --   vim.keymap.set('n', 'K',  vim.lsp.buf.hover, opts)
+          --   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
+          --     vim.lsp.buf.format({ async = true })
+          --   end, { desc = "Format current buffer with LSP" })
+          -- end
+          -- lspconfig.clangd.setup({ on_attach = on_attach })         -- C++
+          -- lspconfig.rust_analyzer.setup({ on_attach = on_attach })  -- Rust
+          -- lspconfig.pyright.setup({ on_attach = on_attach })        -- Python
+
+          -- [nvim-neo-tree/neo-tree.nvim]
+          local ok, neotree = pcall(require, "neo-tree")
+          if ok then
+            neotree.setup {
+              window = { 
+                position = "right",
+                width = 30
+              },
+              filesystem = {
+                filtered_items = {
+                  visible = true,
+                  hide_dotfiles = false,
+                  hide_gitignored = true,
+                  hide_by_name = { "__pycache__", ".git", ".github" },
+                  never_show = { ".git" }
+                }
+              }
+            }
+            vim.keymap.set('n', '<C-M-e>', ':Neotree toggle<CR>', { desc = "Toggle NeoTree" })
+          end
+
+          -- [nvim-treesitter/nvim-treesitter]
+          require('nvim-treesitter.configs').setup {
+            ensure_installed = {},
+            auto_install = false,
+            highlight = { enable = true },
+            indent = { enable = true },
+          }
+
+          -- [lewis6991/gitsigns.nvim]
+          require('gitsigns').setup()
+        EOF
+      '';
+    };
+  };
+  fonts.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-cjk-serif
+    noto-fonts-color-emoji
   ];
   # === custom configs === #
 
@@ -156,7 +320,6 @@
     packages = with pkgs; [
     ];
   };
-
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
