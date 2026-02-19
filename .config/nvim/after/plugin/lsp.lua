@@ -1,61 +1,35 @@
 -- nvim/after/plugin/lsp.lua
 
--- only executed after lsp starts
-local on_attach = function(_, bufnr)
-local bufmap = function(keys, func)
-		vim.keymap.set('n', keys, func, { buffer = bufnr })
-	end
-
-	bufmap('<leader>r', vim.lsp.buf.rename)
-	bufmap('<leader>a', vim.lsp.buf.code_action)
-
-	bufmap('gd', vim.lsp.buf.definition)
-	bufmap('gD', vim.lsp.buf.declaration)
-	bufmap('gI', vim.lsp.buf.implementation)
-	bufmap('<leader>D', vim.lsp.buf.type_definition)
-
-	bufmap('gr', require('telescope.builtin').lsp_references)
-	bufmap('<leader>s', require('telescope.builtin').lsp_document_symbols)
-	bufmap('<leader>S', require('telescope.builtin').lsp_dynamic_workspace_symbols)
-
-	bufmap('K', vim.lsp.buf.hover)
-
-	-- custom command
+local function my_awesome_lsp_on_attach(client, bufnr)
+	local opts = { buffer = bufnr }
+	vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+	vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+	vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+	vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+	vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, opts)
+	vim.keymap.set('n', 'K',  vim.lsp.buf.hover, opts)
 	vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-		vim.lsp.buf.format()
-	end, {})
+		vim.lsp.buf.format({ async = true })
+	end, { desc = "Format current buffer with LSP" })
 end
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 -- install mason :Mason
 -- install language server with `i` delete by `X`
 require('mason').setup()
-require('mason-lspconfig').setup_handlers({
+require('mason-lspconfig').setup({
+  ensure_installed = { "pyright", "rust_analyzer", "clangd" },
+  automatic_installation = true,
+})
 
-	-- fallback
-	function(server_name)
-		require('lspconfig')[server_name].setup {
-			on_attach = on_attach,
-			capabilities = capabilities
-		}
-	end,
-
-	-- lua
-	['lua_ls'] = function()
-		require('neodev').setup()
-		require('lspconfig').lua_ls.setup {
-			on_attach = on_attach,
-			capabilities = capabilities,
-
-			-- :h lspconfig-all
-			Lua = {
-				workspace = { checkThirdParty = false },
-				telemetry = { enable = false },
-			}
-		}
-	end
+local lspconfig = require("lspconfig")
+require("mason-lspconfig").setup_handlers({
+    function (server_name)
+        lspconfig[server_name].setup({
+            on_attach = my_awesome_lsp_on_attach,
+        })
+    end,
+    -- NOTE: can add specific overrides for certain servers here if needed
+    -- ["rust_analyzer"] = function() ... end
 })
 
 -- check :LspInfo to confirm lsp is attached correctly

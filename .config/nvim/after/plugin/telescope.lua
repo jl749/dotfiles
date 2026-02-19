@@ -1,11 +1,7 @@
 -- nvim/after/plugin/telescope.lua
 
 require('telescope').setup({
-	pickers = {
-		find_files = {
-			hidden = true
-		}
-	},
+	pickers = { find_files = { hidden = true } },
 	extensions = {
 		fzf = {
 			fuzzy = true, -- false will only do exact matching
@@ -30,6 +26,6 @@ require('telescope').load_extension('fzf')
 -- e.g. :Telescope find_files
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
--- vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
 vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
