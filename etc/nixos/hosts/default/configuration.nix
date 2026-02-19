@@ -102,7 +102,10 @@
           # nvim-telescope/telescope.nvim
           telescope-nvim
 
-          # nvim-treesitter/nvim-treesitter 
+          # kylechui/nvim-surround
+          nvim-surround
+
+          # nvim-treesitter/nvim-treesitter
           (nvim-treesitter.withPlugins (p: [
             p.c
             p.cpp
@@ -126,10 +129,10 @@
           vim.o.signcolumn = 'yes'
           vim.o.tabstop = 2
           vim.o.shiftwidth = 2
-          vim.o.expandtab = false
+          vim.o.expandtab = true
           vim.o.updatetime = 300
           vim.o.termguicolors = true
-          vim.o.mouse = 'a'
+          vim.o.mouse = ""
           vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { desc = 'Exit terminal' }) 
           vim.keymap.set('n', 'gh', vim.diagnostic.open_float, { desc = 'Show diagnostic: error message' })
           vim.keymap.set('n', 'gH', vim.diagnostic.setloclist, { desc = 'Open diagnostic: quickfix' })
@@ -174,21 +177,6 @@
             vim.lsp.enable(server) -- start the server for the current buffer
           end
 
-          -- local lspconfig = require('lspconfig')
-          -- local on_attach = function(client, bufnr)
-          --   local opts = { buffer = bufnr, noremap = true, silent = true }
-          --   vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-          --   vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-          --   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-          --   vim.keymap.set('n', 'K',  vim.lsp.buf.hover, opts)
-          --   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-          --     vim.lsp.buf.format({ async = true })
-          --   end, { desc = "Format current buffer with LSP" })
-          -- end
-          -- lspconfig.clangd.setup({ on_attach = on_attach })         -- C++
-          -- lspconfig.rust_analyzer.setup({ on_attach = on_attach })  -- Rust
-          -- lspconfig.pyright.setup({ on_attach = on_attach })        -- Python
-
           -- [nvim-neo-tree/neo-tree.nvim]
           local ok, neotree = pcall(require, "neo-tree")
           if ok then
@@ -218,8 +206,11 @@
             indent = { enable = true },
           }
 
+          -- [nvim-treesitter/nvim-treesitter]
+          require('nvim-surround').setup()
+
           -- [lewis6991/gitsigns.nvim]
-          require('gitsigns').setup()
+          require('gitsigns').setup() 
         EOF
       '';
     };
