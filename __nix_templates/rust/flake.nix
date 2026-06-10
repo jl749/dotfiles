@@ -28,9 +28,10 @@
           echo "Hello Rust!!"
           echo "rustc_version: $(rustc --version)"
           echo "cargo_version: $(cargo --version)"
+          export RUST_SRC_PATH="${rustToolchain}/lib/rustlib/src/rust/library"
+          export EDITOR="nvim"
+          export VISUAL="nvim"
         '';
-        EDITOR="nvim"
-        VISUAL="nvim"
       };
   };
 }
