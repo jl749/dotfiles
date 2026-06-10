@@ -42,7 +42,7 @@
     unzip
     tmux
     vim
-    # neovim
+    lilypond
     gcc
     wget
     htop
@@ -53,14 +53,15 @@
     vlc
     libvlc
 
-    # NVIM LSP
-    clang-tools
-    cargo
-    rust-analyzer
-    pyright
+    # NVIM LSP - please install them under flake.nix
+    # clang-tools
+    # cargo
+    # rust-analyzer
+    # pyright
 
     # UTILS
     # *common
+    jq
     yt-dlp
     gthumb
     # *screenshot
@@ -73,11 +74,6 @@
     wine64
     vscode-fhs
     brave
-    # mangohud
-    # protonup-ng
-    # lutris
-    # mgba
-    # desmume
     discord
   ];
   programs.neovim = {
@@ -87,10 +83,11 @@
       packages.myAwesomePlugins = with pkgs.vimPlugins; {
         # list of plugins loaded on startup
         start = [
-          # nvim-neo-tree/neo-tree.nvim
           # plenary-nvim
           # nui-nvim
           # nvim-web-devicons
+
+          # nvim-neo-tree/neo-tree.nvim
           neo-tree-nvim
 
           # lewis6991/gitsigns.nvim
@@ -200,14 +197,14 @@
           end
 
           -- [nvim-treesitter/nvim-treesitter]
-          require('nvim-treesitter.configs').setup {
+          require('nvim-treesitter').setup {
             ensure_installed = {},
             auto_install = false,
             highlight = { enable = true },
             indent = { enable = true },
           }
 
-          -- [nvim-treesitter/nvim-treesitter]
+          -- [kylechui/nvim-surround]
           require('nvim-surround').setup()
 
           -- [lewis6991/gitsigns.nvim]
@@ -268,9 +265,9 @@
       custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']
 
       [org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom0]
-      binding='<Primary><Alt>t'
+      binding='<Control><Alt>t'
       command='kgx'
-      name='Open terminal'
+      name='Open console'
     '';
   };
 
