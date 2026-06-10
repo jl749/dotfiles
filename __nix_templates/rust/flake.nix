@@ -2,28 +2,35 @@
   description = "rust template";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    rust-overlay.url = "github:oxalica/rust-overlay";
   };
-  outputs = { self, nixpkgs }:
+  outputs = { self, nixpkgs, rust-overlay }:
   let
     system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
+    
+    overlays = [ (import rust-overlay) ];
+    pkgs = import nixpkgs { inherit system overlays; };
+    rustToolchain = pkgs.rust-bin.nightly.latest.default.override {
+      extensions = [ "rust-src" "rust-analyzer" ];
+    };
+    dependencies = with pkgs; [
+      # default pkgs
+      rustToolchain
+      pkg-config
+      
+      # additional pkgs
+    ];
   in {
     devShells.${system}.default = 
       pkgs.mkShell {
-        nativeBuildInputs = [];
-        buildInputs = with pkgs; [
-          cargo
-          rustc
-        ];
-        packages = [];
-
+        buildInputs = dependencies;
         shellHook = ''
           echo "Hello Rust!!"
           echo "rustc_version: $(rustc --version)"
           echo "cargo_version: $(cargo --version)"
         '';
-
-        COLOR = "blue";
+        EDITOR="nvim"
+        VISUAL="nvim"
       };
   };
 }
