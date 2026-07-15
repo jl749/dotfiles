@@ -23,14 +23,16 @@
       # "google-chrome"
       "brave"
 
+      "claude-code"
+
       "steam"
       "steam-unwrapped"
 
       "discord"
 
-      "code"
-      "vscode"
-      "vscode-fhs"
+      # "code"
+      # "vscode"
+      # "vscode-fhs"
     ];
 
   # List packages installed in system profile. To search, run:
@@ -45,6 +47,7 @@
     lilypond
     gcc
     wget
+    curl
     htop
     tree
     file
@@ -52,6 +55,7 @@
     sshfs
     vlc
     libvlc
+    lm_sensors
 
     # NVIM LSP - please install them under flake.nix
     # clang-tools
@@ -61,9 +65,11 @@
 
     # UTILS
     # *common
+    claude-code
     jq
     yt-dlp
     gthumb
+    qimgv
     # *screenshot
     grim           # grim -t png -o {monitor_name} "myscreenshot.png"
     slurp          # grim -g "$(slurp)"
@@ -72,7 +78,6 @@
 
     # ETC
     wine64
-    vscode-fhs
     brave
     discord
   ];
@@ -95,6 +100,12 @@
 
           # neovim/nvim-lspconfig
           nvim-lspconfig
+
+          # hrsh7th/nvim-cmp
+          nvim-cmp
+
+          # hrsh7th/cmp-nvim-lsp
+          cmp-nvim-lsp
 
           # nvim-telescope/telescope.nvim
           telescope-nvim
@@ -120,7 +131,7 @@
           -- [VIM]
           vim.g.mapleader = ' '
           vim.g.maplocalleader = ' '
-          vim.o.clipboard = 'unnamed'
+          vim.o.clipboard = 'unnamedplus'
           vim.o.number = true
           vim.o.relativenumber = true
           vim.o.signcolumn = 'yes'
@@ -159,20 +170,34 @@
           vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 
           -- [LSP]
-          local function my_awesome_lsp_on_attach(client, bufnr)
-            local opts = { buffer = bufnr }
-            vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-            vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-            vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-            vim.keymap.set('n', 'K',  vim.lsp.buf.hover, opts)
-            vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-              vim.lsp.buf.format({ async = true })
-            end, { desc = "Format current buffer with LSP" })
-          end
-          for _, server in ipairs({ "pyright", "rust_analyzer", "clangd" }) do
-            vim.lsp.config(server, { on_attach = my_awesome_lsp_on_attach })
-            vim.lsp.enable(server) -- start the server for the current buffer
-          end
+          local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
+          vim.api.nvim_create_autocmd('LspAttach', {
+            callback = function(ev)
+              local opts = { buffer = ev.buf }
+              vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+              vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+              vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+              vim.api.nvim_buf_create_user_command(ev.buf, 'Format', function(_)
+                vim.lsp.buf.format({ async = true })
+              end, { desc = "Format current buffer with LSP" })
+            end
+          })
+          vim.lsp.config('*', { capabilities = lsp_capabilities })
+          vim.lsp.enable({ 'pyright', 'rust_analyzer', 'clangd' })
+
+          -- [hrsh7th/nvim-cmp]
+          local cmp = require('cmp')
+          cmp.setup({
+            mapping = cmp.mapping.preset.insert({
+              ['<C-Space>'] = cmp.mapping.complete(),
+              ['<Tab>'] = cmp.mapping.confirm({ select = true }),
+              ['<M-j>'] = cmp.mapping.select_next_item(),
+              ['<M-k>'] = cmp.mapping.select_prev_item(),
+            }),
+            sources = cmp.config.sources({
+              { name = 'nvim_lsp' }, -- suggestions from active LSPs
+            })
+          })
 
           -- [nvim-neo-tree/neo-tree.nvim]
           local ok, neotree = pcall(require, "neo-tree")
@@ -188,7 +213,7 @@
                   visible = true,
                   hide_dotfiles = false,
                   hide_gitignored = true,
-                  hide_by_name = { "__pycache__", ".git", ".github" },
+                  hide_by_name = { "__pycache__", ".github" },
                   never_show = { ".git" }
                 }
               }
@@ -197,12 +222,12 @@
           end
 
           -- [nvim-treesitter/nvim-treesitter]
-          require('nvim-treesitter').setup {
-            ensure_installed = {},
-            auto_install = false,
-            highlight = { enable = true },
-            indent = { enable = true },
-          }
+          vim.api.nvim_create_autocmd('FileType', {
+            pattern = { 'c', 'cpp', 'rust', 'python', 'nix' },
+            callback = function()
+              vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+            end,
+          })
 
           -- [kylechui/nvim-surround]
           require('nvim-surround').setup()
@@ -224,6 +249,7 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub.memtest86.enable = true;
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
