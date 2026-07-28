@@ -1,17 +1,13 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { config, pkgs, lib, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ../../modules/modulebundle.nix
-    ];
+  # Hardware scan + this repo's shared module bundle.
+  imports = [
+    ./hardware-configuration.nix
+    ../../modules/modulebundle.nix
+  ];
 
-  # === custom configs === #
+  # ===================== 🌟 ✨  CUSTOM CONFIGS  ✨ 🌟  ===================== #
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   firefox.enable = true;
@@ -20,8 +16,9 @@
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
       # [UNFREE]
-      # "google-chrome"
       "brave"
+
+      "spotify"
 
       "claude-code"
 
@@ -29,14 +26,8 @@
       "steam-unwrapped"
 
       "discord"
-
-      # "code"
-      # "vscode"
-      # "vscode-fhs"
     ];
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
     # BASE
     glibcLocales
@@ -58,17 +49,15 @@
     lm_sensors
 
     # NVIM LSP - please install them under flake.nix
-    # clang-tools
-    # cargo
-    # rust-analyzer
-    # pyright
+    # e.g. clang-tools, cargo, rust-analyzer, pyright, ...
 
     # UTILS
     # *common
-    claude-code
+    unstable.claude-code   # pulled from nixos-unstable via flake overlay
+    smartmontools
     jq
     yt-dlp
-    gthumb
+    gthumb         # built with -Dclutter=false, see overlay-gthumb in flake.nix
     qimgv
     # *screenshot
     grim           # grim -t png -o {monitor_name} "myscreenshot.png"
@@ -80,6 +69,7 @@
     wine64
     brave
     discord
+    spotify
   ];
   programs.neovim = {
     enable = true;
@@ -244,31 +234,32 @@
     noto-fonts-cjk-serif
     noto-fonts-color-emoji
   ];
-  # === custom configs === #
+  # ===================== 🌟 ✨  CUSTOM CONFIGS  ✨ 🌟  ===================== #
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.grub.memtest86.enable = true;
+  # Bootloader: systemd-boot on EFI, with a memtest86+ entry in the menu.
+  boot.loader = {
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
+    systemd-boot.memtest86.enable = true;
+  };
 
-  networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  # ┌─────────────────────────────────────────────────────────────────────────┐
+  # │ Blacklist faulty DRAM region found via memtest86+ (bad pages            │
+  # │ 0x13280-0x1329f, physical 0x13280000-0x132a0000, ~128 KiB at ~306 MiB). │
+  # │ Reserve a 1 MiB aligned block so the kernel never allocates the bad     │
+  # │ cells. STOPGAP until the failing stick (likely the 16 GiB SODIMM) is    │
+  # │ replaced.                                                               │
+  # └─────────────────────────────────────────────────────────────────────────┘
+  boot.kernelParams = [ "memmap=1M$0x13200000" ];
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
+  # Networking: NetworkManager handles wired/wireless connections.
+  networking.hostName = "nixos";
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
   time.timeZone = "Asia/Seoul";
 
-  # Select internationalisation properties.
-  # https://search.nixos.org/options?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=locale
-  # https://nixos.org/manual/nixos/stable/index.html#module-services-input-methods-ibus
-  # ibus-daemon -d
-  # ibus-setup
+  # Locale: English default, Korean also built. Hangul input via ibus
+  # (run `ibus-setup` once per user to enable the engine).
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.supportedLocales = [ "en_US.UTF-8/UTF-8" "ko_KR.UTF-8/UTF-8" ];
   i18n.inputMethod = {
@@ -276,37 +267,42 @@
       type = "ibus";
       ibus.engines = [ pkgs.ibus-engines.hangul ];
   };
-  i18n.glibcLocales = pkgs.glibcLocales;
 
-  # Enable the X11 windowing system.
+  # X11 server (also backs XWayland under the default GNOME Wayland session).
   services.xserver.enable = true;
 
-  # Enable the GNOME Desktop Environment.
+  # GNOME desktop with the GDM login manager.
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
-  services.desktopManager.gnome = {
-    extraGSettingsOverridePackages = with pkgs; [ gnome-settings-daemon ];
-    extraGSettingsOverrides = ''
-      [org.gnome.settings-daemon.plugins.media-keys]
-      custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']
 
-      [org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom0]
-      binding='<Control><Alt>t'
-      command='kgx'
-      name='Open console'
-    '';
-  };
+  # Ctrl+Alt+T -> new GNOME Console (kgx) window. The per-binding schema is
+  # relocatable, so it must be set as a dconf default; a gsettings vendor
+  # override can't reach it.
+  programs.dconf.profiles.user.databases = [{
+    settings = {
+      "org/gnome/settings-daemon/plugins/media-keys" = {
+        custom-keybindings = [
+          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+        ];
+      };
+      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+        name = "Open console";
+        command = "kgx";
+        binding = "<Control><Alt>t";
+      };
+    };
+  }];
 
-  # Configure keymap in X11
+  # Keyboard layout.
   services.xserver.xkb = {
     layout = "us";
     variant = "";
   };
 
-  # Enable CUPS to print documents.
+  # Printing (CUPS).
   services.printing.enable = true;
 
-  # Enable sound with pipewire.
+  # Audio via PipeWire (replacing PulseAudio) + Bluetooth with Blueman.
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
   services.pulseaudio.enable = false;
@@ -316,18 +312,9 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Primary user 'simp' (set the password with `passwd`).
   users.users.simp = {
     isNormalUser = true;
     description = "simp";
@@ -336,32 +323,13 @@
     ];
   };
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
+  # Remote login over SSH.
   services.openssh.enable = true;
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.05"; # Did you read the comment?
+  # This value determines the NixOS release from which the default settings for
+  # stateful data (file locations, database versions) were taken. Leave it at the
+  # release version of this system's first install; read the docs before changing.
+  system.stateVersion = "24.05";
 
 
 }
