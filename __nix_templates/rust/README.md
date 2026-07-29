@@ -1,9 +1,9 @@
 # NIXOS RUST Template
 
 ## NIX
-To update flake: `sudo flake update`
+To update flake: `nix flake update` (never with sudo, it writes flake.lock)
 
-To start bash shell: `nix develop .#default`
+To start bash shell: `nix develop`
 
 ## cargo
 ```
