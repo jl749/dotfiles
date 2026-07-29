@@ -11,7 +11,7 @@ require('neo-tree').setup {
       visible = true,
       hide_dotfiles = false,
       hide_gitignored = true,
-      hide_by_name = { "__pycache__", ".git", ".github" },
+      hide_by_name = { "__pycache__", ".github" },
       never_show = { ".git" }
     }
   }

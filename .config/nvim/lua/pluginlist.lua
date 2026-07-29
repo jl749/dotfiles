@@ -1,11 +1,18 @@
 -- nvim/lua/pluginlist.lua
 -- Contians all the plugins
+-- Mirrors programs.neovim.configure.packages in etc/nixos/hosts/default/configuration.nix;
+-- mason.nvim is the extra bit that replaces nix-installed language servers.
 
 return {
   'williamboman/mason.nvim',
   'williamboman/mason-lspconfig.nvim',
   'neovim/nvim-lspconfig',
   'lewis6991/gitsigns.nvim',
+
+  {
+    'hrsh7th/nvim-cmp',
+    dependencies = { 'hrsh7th/cmp-nvim-lsp' },
+  },
 
   {
     'nvim-telescope/telescope.nvim',
@@ -18,6 +25,7 @@ return {
 
   {
     'nvim-treesitter/nvim-treesitter',
+    branch = 'main',
     build = ':TSUpdate',
   },
 
