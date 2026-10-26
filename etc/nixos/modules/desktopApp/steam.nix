@@ -13,9 +13,9 @@
     programs.steam.gamescopeSession.enable = true;
     programs.gamemode.enable = true;
 
-    environment.sessionVariables = {
-      # in case you have to run `protonup` to install the latest proton versions
-      STEAM_EXTRA_COMPAT_TOOLS_PATHS = "/home/simp/.steam/root/compatibilitytools.d";  
-    };
+    # GE-Proton, selectable per game under Properties > Compatibility; updates with the flake
+    programs.steam.extraCompatPackages = [ pkgs.proton-ge-bin ];
+
+    environment.systemPackages = [ pkgs.mangohud ];
   };
 }

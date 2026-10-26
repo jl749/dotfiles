@@ -1,8 +1,7 @@
 {
   description = "Nixos config flake";
 
-  # Package sources. `nixpkgs` is the stable base for the whole system;
-  # `nixpkgs-unstable` exists only to cherry-pick newer packages (see overlay).
+  # Package sources. `nixpkgs` is the stable base for the whole system; `nixpkgs-unstable` exists only to cherry-pick newer packages (see overlay).
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -21,13 +20,6 @@
         };
       };
 
-      # gthumb 3.12.10 segfaults fix (Clutter 1.26 has been unmaintained since 2020)
-      overlay-gthumb = final: prev: {
-        gthumb = prev.gthumb.overrideAttrs (old: {
-          mesonFlags = (old.mesonFlags or [ ]) ++ [ "-Dclutter=false" ];
-        });
-      };
-
       # Stable package set, available for any custom flake outputs added later.
       pkgs = nixpkgs.legacyPackages.${system};
     in
@@ -38,7 +30,7 @@
         default = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
           modules = [
-            { nixpkgs.overlays = [ overlay-unstable overlay-gthumb ]; }
+            { nixpkgs.overlays = [ overlay-unstable ]; }
             ./hosts/default/configuration.nix
           ];
         };

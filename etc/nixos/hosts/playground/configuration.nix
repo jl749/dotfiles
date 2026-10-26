@@ -14,8 +14,9 @@
   # === custom configs === #
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  firefox.enable = true;
   steam.enable = true;
+  discord.enable = true;
+  spotify.enable = true;
 
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
@@ -26,6 +27,7 @@
       "steam"
       "steam-unwrapped"
       "discord"
+      "spotify"
     ];
 
   # List packages installed in system profile. To search, run:
@@ -48,7 +50,6 @@
     # UTILS
     # *common
     yt-dlp
-    gthumb
     # *screenshot
     grim           # grim -t png -o {monitor_name} "myscreenshot.png"
     slurp          # grim -g "$(slurp)"
@@ -58,11 +59,8 @@
     # ETC
     wine64
     vscode
-    brave
     mangohud
-    protonup
     lutris
-    discord
   ];
   # === custom configs === #
 
