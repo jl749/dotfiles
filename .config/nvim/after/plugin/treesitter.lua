@@ -1,8 +1,8 @@
 -- nvim/after/plugin/treesitter.lua
 
 -- nvim-treesitter `main` branch: parsers are installed explicitly
--- (:TSInstall {language} still works) and highlight/indent are turned on per buffer.
--- On NixOS the parsers come from nvim-treesitter.withPlugins instead.
+-- (:TSInstall {language} still works). On NixOS the parsers come from nvim-treesitter.withPlugins instead.
+-- The main-branch rewrite has no highlight module; each buffer must start treesitter itself
 local langs = { 'c', 'cpp', 'rust', 'python', 'nix' }
 
 require('nvim-treesitter').install(langs)

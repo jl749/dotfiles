@@ -1,6 +1,6 @@
 -- nvim/lua/pluginlist.lua
--- Contians all the plugins
--- Mirrors programs.neovim.configure.packages in etc/nixos/hosts/default/configuration.nix;
+-- Contains all the plugins
+-- Mirrors programs.neovim.configure.packages in etc/nixos/modules/editor/neovim.nix;
 -- mason.nvim is the extra bit that replaces nix-installed language servers.
 
 return {
@@ -17,10 +17,6 @@ return {
   {
     'nvim-telescope/telescope.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' }
-  },
-  {
-    'nvim-telescope/telescope-fzf-native.nvim',
-    build = 'make',
   },
 
   {

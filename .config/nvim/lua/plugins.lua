@@ -1,8 +1,8 @@
--- nvim/lua/plugin.lua
+-- nvim/lua/plugins.lua
 -- DO NOT MODIFY!!
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
   vim.fn.system({
     "git",
     "clone",
