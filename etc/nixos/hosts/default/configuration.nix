@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   # Hardware scan + this repo's shared module bundle.
@@ -8,7 +13,10 @@
   ];
 
   # ===================== 🌟 ✨  CUSTOM CONFIGS  ✨ 🌟  ===================== #
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # NOTE: Store cleanup is done by hand (`sudo nix-collect-garbage --delete-older-than 14d`, `nix store optimise`). Uncomment to automate:
   # nix.gc = { automatic = true; dates = "weekly"; options = "--delete-older-than 14d"; };
@@ -20,7 +28,8 @@
   kdeconnect.enable = true;
   spotify.enable = true;
 
-  nixpkgs.config.allowUnfreePredicate = pkg:
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
     builtins.elem (lib.getName pkg) [
       # [UNFREE]
       "brave"
@@ -56,20 +65,20 @@
 
     # NVIM LSP - please install them under flake.nix
     # e.g. clang-tools, cargo, rust-analyzer, pyright, ...
-    lua-language-server   # exception
+    lua-language-server # exception
 
     # UTILS
     # *common
-    unstable.claude-code  # pulled from nixos-unstable via flake overlay
-    unstable.codex        # pulled from nixos-unstable via flake overlay
+    unstable.claude-code # pulled from nixos-unstable via flake overlay
+    unstable.codex # pulled from nixos-unstable via flake overlay
     smartmontools
     jq
     yt-dlp
     # *screenshot
-    grim           # grim -t png -o {monitor_name} "myscreenshot.png"
-    slurp          # grim -g "$(slurp)"
-    wl-clipboard   # grim -g "$(slurp)" - | wl-copy
-    swappy         # grim -g "$(slurp)" - | swappy -f -  OR  wl-paste | swappy -f -
+    grim # grim -t png -o {monitor_name} "myscreenshot.png"
+    slurp # grim -g "$(slurp)"
+    wl-clipboard # grim -g "$(slurp)" - | wl-copy
+    swappy # grim -g "$(slurp)" - | swappy -f -  OR  wl-paste | swappy -f -
 
     # ETC
     wine64
@@ -107,11 +116,14 @@
   # Locale: English default, Korean also built. Hangul input via ibus
   # (add "Korean (Hangul)" under GNOME Settings > Keyboard > Input Sources).
   i18n.defaultLocale = "en_US.UTF-8";
-  i18n.supportedLocales = [ "en_US.UTF-8/UTF-8" "ko_KR.UTF-8/UTF-8" ];
+  i18n.supportedLocales = [
+    "en_US.UTF-8/UTF-8"
+    "ko_KR.UTF-8/UTF-8"
+  ];
   i18n.inputMethod = {
-      enable = true;
-      type = "ibus";
-      ibus.engines = [ pkgs.ibus-engines.hangul ];
+    enable = true;
+    type = "ibus";
+    ibus.engines = [ pkgs.ibus-engines.hangul ];
   };
 
   # GNOME desktop (Wayland) with the GDM login manager.
@@ -120,20 +132,22 @@
 
   # Ctrl+Alt+T -> new GNOME Console (kgx) window.
   # The per-binding schema is relocatable, so it must be set as a dconf default; a gsettings vendor override can't reach it.
-  programs.dconf.profiles.user.databases = [{
-    settings = {
-      "org/gnome/settings-daemon/plugins/media-keys" = {
-        custom-keybindings = [
-          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
-        ];
+  programs.dconf.profiles.user.databases = [
+    {
+      settings = {
+        "org/gnome/settings-daemon/plugins/media-keys" = {
+          custom-keybindings = [
+            "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+          ];
+        };
+        "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+          name = "Open console";
+          command = "kgx";
+          binding = "<Control><Alt>t";
+        };
       };
-      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
-        name = "Open console";
-        command = "kgx";
-        binding = "<Control><Alt>t";
-      };
-    };
-  }];
+    }
+  ];
 
   # Keyboard layout (read by GNOME on Wayland).
   services.xserver.xkb.layout = "us";
@@ -153,7 +167,10 @@
   users.users.simp = {
     isNormalUser = true;
     description = "simp";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
   };
 
   # No sshd: this machine only makes outgoing SSH connections (the ssh client is always installed).
@@ -163,6 +180,5 @@
   # stateful data (file locations, database versions) were taken. Leave it at the
   # release version of this system's first install; read the docs before changing.
   system.stateVersion = "24.05";
-
 
 }

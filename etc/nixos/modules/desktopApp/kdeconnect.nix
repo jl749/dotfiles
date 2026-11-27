@@ -1,4 +1,10 @@
-{ pkgs, lib, config, ... }: {
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+{
 
   options = {
     kdeconnect.enable = lib.mkEnableOption "enables KDE Connect (via GSConnect on GNOME)";

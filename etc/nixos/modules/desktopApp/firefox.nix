@@ -1,4 +1,10 @@
-{ pkgs, lib, config, ... }: {
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+{
 
   options = {
     firefox.enable = lib.mkEnableOption "enables firefox";
@@ -75,7 +81,7 @@
         };
 
         # about:config
-        Preferences = {};
+        Preferences = { };
 
         # Check about:support for extension/add-on ID strings.
         # Valid strings for installation_mode are "allowed", "blocked", "force_installed" and "normal_installed".
@@ -95,11 +101,26 @@
         # List IDs: https://github.com/gorhill/uBlock/blob/master/assets/assets.json
         "3rdparty".Extensions."uBlock0@raymondhill.net" = {
           userSettings = [
-            [ "webrtcIPAddressHidden" "true" ]     # don't leak local/LAN IPs via WebRTC
-            [ "prefetchingDisabled" "true" ]       # default, pinned
-            [ "hyperlinkAuditingDisabled" "true" ] # default, pinned (<a ping>)
-            [ "cnameUncloakEnabled" "true" ]       # default, pinned (catches CNAME-disguised trackers)
-            [ "cloudStorageEnabled" "false" ]
+            [
+              "webrtcIPAddressHidden"
+              "true"
+            ] # don't leak local/LAN IPs via WebRTC
+            [
+              "prefetchingDisabled"
+              "true"
+            ] # default, pinned
+            [
+              "hyperlinkAuditingDisabled"
+              "true"
+            ] # default, pinned (<a ping>)
+            [
+              "cnameUncloakEnabled"
+              "true"
+            ] # default, pinned (catches CNAME-disguised trackers)
+            [
+              "cloudStorageEnabled"
+              "false"
+            ]
           ];
           toOverwrite.filterLists = [
             # uBO defaults
@@ -114,9 +135,9 @@
             "urlhaus-1"
             "plowe-0"
             # extra privacy/security (off by default)
-            "adguard-spyware-url"   # strips tracking params (utm_*, fbclid, ...) from URLs
-            "block-lan"             # stops sites probing your LAN/localhost
-            "curben-phishing"       # phishing URL blocklist
+            "adguard-spyware-url" # strips tracking params (utm_*, fbclid, ...) from URLs
+            "block-lan" # stops sites probing your LAN/localhost
+            "curben-phishing" # phishing URL blocklist
           ];
         };
       };

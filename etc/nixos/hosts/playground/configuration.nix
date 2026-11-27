@@ -2,23 +2,32 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ../../modules/modulebundle.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ../../modules/modulebundle.nix
+  ];
 
   # === custom configs === #
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   steam.enable = true;
   discord.enable = true;
   spotify.enable = true;
 
-  nixpkgs.config.allowUnfreePredicate = pkg:
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
     builtins.elem (lib.getName pkg) [
       # [UNFREE]
       # "google-chrome"
@@ -51,10 +60,10 @@
     # *common
     yt-dlp
     # *screenshot
-    grim           # grim -t png -o {monitor_name} "myscreenshot.png"
-    slurp          # grim -g "$(slurp)"
-    wl-clipboard   # grim -g "$(slurp)" - | wl-copy
-    swappy         # grim -g "$(slurp)" - | swappy -f -  OR  wl-paste | swappy -f -
+    grim # grim -t png -o {monitor_name} "myscreenshot.png"
+    slurp # grim -g "$(slurp)"
+    wl-clipboard # grim -g "$(slurp)" - | wl-copy
+    swappy # grim -g "$(slurp)" - | swappy -f -  OR  wl-paste | swappy -f -
 
     # ETC
     wine64
@@ -87,11 +96,14 @@
   # ibus-daemon -d
   # ibus-setup
   i18n.defaultLocale = "en_US.UTF-8";
-  i18n.supportedLocales = [ "en_US.UTF-8/UTF-8" "ko_KR.UTF-8/UTF-8" ];
+  i18n.supportedLocales = [
+    "en_US.UTF-8/UTF-8"
+    "ko_KR.UTF-8/UTF-8"
+  ];
   i18n.inputMethod = {
-      enable = true;
-      type = "ibus";
-      ibus.engines = [ pkgs.ibus-engines.hangul ];
+    enable = true;
+    type = "ibus";
+    ibus.engines = [ pkgs.ibus-engines.hangul ];
   };
   i18n.glibcLocales = pkgs.glibcLocales;
 
@@ -148,11 +160,14 @@
   users.users.simp = {
     isNormalUser = true;
     description = "simp";
-    extraGroups = [ "networkmanager" "wheel" "fuse" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "fuse"
+    ];
     packages = with pkgs; [
     ];
   };
-
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -180,6 +195,5 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.05"; # Did you read the comment?
-
 
 }
